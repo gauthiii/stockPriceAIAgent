@@ -54,6 +54,89 @@ async function predictToday() {
       alert('Failed to fetch 10 days prediction.');
     }
   }
+
+
+  function getCurrencySymbol(currencyCode) {
+    try {
+      const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: currencyCode,
+      });
+      const parts = formatter.formatToParts(1);
+      const currencySymbol = parts.find(part => part.type === 'currency').value;
+      return currencySymbol;
+    } catch (error) {
+      return undefined;
+    }
+  }
+
+
+  async function hello() {
+    const userName = document.getElementById('aiAgent').value.trim();
+    if (!userName) {
+      alert('Please enter your name.');
+      return;
+    }
+  
+    try {
+      const res = await fetch('/hello', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ companyName: userName })  // you are sending companyName, it's okay
+      });
+      const data = await res.json();
+  
+      const agentName = data.todayPrediction.agent || 'Agent';
+      const serviceName = data.todayPrediction.service || 'Service';
+  
+      document.getElementById('outputArea').innerHTML = `
+        <div class="bg-white/20 p-6 rounded-xl text-center">
+          <h2 class="text-2xl font-semibold mb-2">👋 Hello ${userName}!</h2>
+          <p class="text-lg">I am <span class="font-bold">${agentName}</span>, and I will provide you <span class="font-bold">${serviceName}</span> service.</p>
+        </div>
+      `;
+    } catch (error) {
+      console.error(error);
+      alert('Failed to call AI Agent.');
+    }
+  }
+  
+
+
+
+
+
+
+  async function leo() {
+    const movieName = document.getElementById('aiAgentLeo').value.trim();
+    if (!movieName) {
+      alert('Please enter your movie name.');
+      return;
+    }
+  
+    try {
+      const res = await fetch('/leo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ movieName: movieName })  // you are sending companyName, it's okay
+      });
+      const data = await res.json();
+  
+      const agentName = data.movieResult.agent || 'Agent';
+      const synopsis = data.movieResult.synopsis || 'Service';
+  
+      document.getElementById('outputArea').innerHTML = `
+        <div class="bg-white/20 p-6 rounded-xl text-center">
+          <h2 class="text-2xl font-semibold mb-2">👋 Summary of ${movieName}!</h2>
+          <p class="text-lg">I am <span class="font-normal">${agentName}</span> <br><br> <span class="font-bold">${synopsis}</span></p>
+        </div>
+      `;
+    } catch (error) {
+      console.error(error);
+      alert('Failed to call AI Agent.');
+    }
+  }
+  
   
 
 
@@ -86,7 +169,7 @@ async function predictTodayYahoo() {
       document.getElementById('outputArea').innerHTML = `
         <div class="bg-white/20 p-6 rounded-2xl shadow-md space-y-4">
           <h3 class="text-2xl font-bold">${todayYahooPrediction.companyName} (${todayYahooPrediction.symbol})</h3>
-          <p class="text-lg">📈 <strong>Current Price:</strong> $${todayYahooPrediction.marketPrice} ${todayYahooPrediction.currency}</p>
+          <p class="text-lg">📈 <strong>Current Price:</strong> ${getCurrencySymbol(todayYahooPrediction.currency)}${todayYahooPrediction.marketPrice} ${todayYahooPrediction.currency}</p>
           <p class="text-sm">🕒 <strong>Timestamp:</strong> ${formattedDate}</p>
         </div>
       `;

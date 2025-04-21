@@ -45,13 +45,22 @@ export async function getTodayPrice(companyName) {
 // Last 10 Days Historical
 export async function getLast10Days(companyName) {
   try {
+
+    let symbol = companyName;
+
+    // If companyName is long, auto search
+    if (companyName.length > 3) { // rough check
+      const result = await yahooFinance.search(companyName);
+      symbol = result.quotes[0]?.symbol || companyName;
+    }
+
     const today = new Date();
     const past = new Date();
     past.setDate(today.getDate() - 20);
 
     const queryOptions = { period1: past, period2: today, interval: '1d' };
 
-    const result = await yahooFinance.historical(companyName, queryOptions);
+    const result = await yahooFinance.historical(symbol, queryOptions);
 
     const last10Days = result.map(day => ({
       date: day.date.toISOString().split('T')[0],
