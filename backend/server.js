@@ -3,7 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { generateStockPricePrediction, generateStockPriceRange, geminiIntro, geminiLeo } from './gemini.js';
+import { generateStockPricePrediction, generateStockPriceRange } from './gemini.js';
 import { getTodayPrice, getLast10Days } from './yahoo.js'; // 🔥 NEW IMPORT
 
 dotenv.config();
@@ -32,38 +32,6 @@ function cleanJSON(text) {
 
 // ========================= GEMINI-BASED APIs =========================
 
-//hello
-app.post('/hello', async (req, res) => {
-    try {
-      const { companyName } = req.body;
-      if (!companyName) {
-        return res.status(400).json({ error: 'companyName is required' });
-      }
-      const result = await geminiIntro();
-      const cleanedResult = cleanJSON(result);
-      res.json({ company: companyName, todayPrediction: JSON.parse(cleanedResult) });
-    } catch (err) {
-      console.error('Prediction Error:', err.message);
-      res.status(500).json({ error: 'Failed to generate prediction.' });
-    }
-  });
-
-
-  //hello
-app.post('/leo', async (req, res) => {
-    try {
-      const { movieName } = req.body;
-      if (!movieName) {
-        return res.status(400).json({ error: 'movieName is required' });
-      }
-      const result = await geminiLeo(movieName);
-      const cleanedResult = cleanJSON(result);
-      res.json({ movieName: movieName, movieResult: JSON.parse(cleanedResult) });
-    } catch (err) {
-      console.error('Prediction Error:', err.message);
-      res.status(500).json({ error: 'Failed to generate prediction.' });
-    }
-  });
 
 // 🧠 Predict today's price using Gemini
 app.post('/predict', async (req, res) => {

@@ -1,9 +1,19 @@
 async function predictToday() {
-    const companyName = document.getElementById('companyName').value.trim();
+    const companyName = document.getElementById('companyName1').value.trim();
     if (!companyName) {
       alert('Please enter a company name.');
       return;
     }
+
+    const outputArea = document.getElementById('outputArea');
+
+    // ✨ Show loading spinner immediately
+    outputArea.innerHTML = `
+      <div class="flex justify-center items-center h-48">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
+      </div>
+    `;
+  
   
     try {
       const res = await fetch('/predict', {
@@ -71,75 +81,7 @@ async function predictToday() {
   }
 
 
-  async function hello() {
-    const userName = document.getElementById('aiAgent').value.trim();
-    if (!userName) {
-      alert('Please enter your name.');
-      return;
-    }
   
-    try {
-      const res = await fetch('/hello', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ companyName: userName })  // you are sending companyName, it's okay
-      });
-      const data = await res.json();
-  
-      const agentName = data.todayPrediction.agent || 'Agent';
-      const serviceName = data.todayPrediction.service || 'Service';
-  
-      document.getElementById('outputArea').innerHTML = `
-        <div class="bg-white/20 p-6 rounded-xl text-center">
-          <h2 class="text-2xl font-semibold mb-2">👋 Hello ${userName}!</h2>
-          <p class="text-lg">I am <span class="font-bold">${agentName}</span>, and I will provide you <span class="font-bold">${serviceName}</span> service.</p>
-        </div>
-      `;
-    } catch (error) {
-      console.error(error);
-      alert('Failed to call AI Agent.');
-    }
-  }
-  
-
-
-
-
-
-
-  async function leo() {
-    const movieName = document.getElementById('aiAgentLeo').value.trim();
-    if (!movieName) {
-      alert('Please enter your movie name.');
-      return;
-    }
-  
-    try {
-      const res = await fetch('/leo', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ movieName: movieName })  // you are sending companyName, it's okay
-      });
-      const data = await res.json();
-  
-      const agentName = data.movieResult.agent || 'Agent';
-      const synopsis = data.movieResult.synopsis || 'Service';
-  
-      document.getElementById('outputArea').innerHTML = `
-        <div class="bg-white/20 p-6 rounded-xl text-center">
-          <h2 class="text-2xl font-semibold mb-2">👋 Summary of ${movieName}!</h2>
-          <p class="text-lg">I am <span class="font-normal">${agentName}</span> <br><br> <span class="font-bold">${synopsis}</span></p>
-        </div>
-      `;
-    } catch (error) {
-      console.error(error);
-      alert('Failed to call AI Agent.');
-    }
-  }
-  
-  
-
-
   // 🔥 Yahoo - Today's Real Price
 // 🔥 Yahoo - Today's Real Price (Beautified)
 async function predictTodayYahoo() {
@@ -148,6 +90,16 @@ async function predictTodayYahoo() {
       alert('Please enter a company name.');
       return;
     }
+
+    const outputArea = document.getElementById('outputArea');
+
+    // ✨ Show loading spinner immediately
+    outputArea.innerHTML = `
+      <div class="flex justify-center items-center h-48">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
+      </div>
+    `;
+  
   
     try {
       const res = await fetch('/predict/yahoo', {
@@ -176,7 +128,10 @@ async function predictTodayYahoo() {
   
     } catch (error) {
       console.error(error);
-      alert('Failed to fetch Yahoo today price.');
+      // alert('Failed to fetch Yahoo today price.');
+
+      outputArea.innerHTML = `<p class="text-red-500 text-center">Failed to Yahoo today price. Try again.</p>`;
+
     }
   }
   
@@ -188,6 +143,16 @@ async function predictTodayYahoo() {
       alert('Please enter a company symbol.');
       return;
     }
+
+    const outputArea = document.getElementById('outputArea');
+
+    // ✨ Show loading spinner immediately
+    outputArea.innerHTML = `
+      <div class="flex justify-center items-center h-48">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
+      </div>
+    `;
+  
   
     try {
       const res = await fetch('/predictRange/yahoo', {
@@ -208,6 +173,9 @@ async function predictTodayYahoo() {
       document.getElementById('outputArea').innerHTML = html;
     } catch (error) {
       console.error(error);
-      alert('Failed to fetch Yahoo last 10 days.');
+      // alert('Failed to fetch Yahoo last 10 days.');
+
+      outputArea.innerHTML = `<p class="text-red-500 text-center">Failed to get Yahoo's last 10 days. Try again.</p>`;
+
     }
   }
