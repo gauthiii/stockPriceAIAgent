@@ -1,24 +1,43 @@
 import yahooFinance from 'yahoo-finance2';
 
+
+export async function searchSymbolFromName(companyName) {
+  try {
+    const result = await yahooFinance.search(companyName);
+    return result.quotes[0]?.symbol || null;
+  } catch (error) {
+    console.error('Yahoo Search Error:', error.message);
+    throw new Error('Failed to search company symbol.');
+  }
+}
+
+
 // Today Price
 export async function getTodayPrice(companyName) {
   try {
-    const result = await yahooFinance.quote(companyName);
+    let symbol = companyName;
 
-    console.log("\n\nRESULT\n\n",result);
+    // If companyName is long, auto search
+    if (companyName.length > 3) { // rough check
+      const result = await yahooFinance.search(companyName);
+      symbol = result.quotes[0]?.symbol || companyName;
+    }
+
+    const quote = await yahooFinance.quote(symbol);
 
     return {
-      companyName: result.shortName || companyName,
-      symbol: result.symbol,
-      marketPrice: result.regularMarketPrice,
-      currency: result.currency,
-      timestamp: new Date(result.regularMarketTime * 1000).toISOString(),
+      companyName: quote.shortName || symbol,
+      symbol: quote.symbol,
+      marketPrice: quote.regularMarketPrice,
+      currency: quote.currency,
+      timestamp: new Date(quote.regularMarketTime * 1000).toISOString(),
     };
   } catch (error) {
     console.error('Yahoo Finance Error (Today Price):', error.message);
     throw new Error('Failed to fetch today price.');
   }
 }
+
 
 // Last 10 Days Historical
 export async function getLast10Days(companyName) {
