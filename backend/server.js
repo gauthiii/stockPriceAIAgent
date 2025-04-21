@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { generateStockPricePrediction, generateStockPriceRange } from './gemini.js';
+import { getTodayPrice, getLast10Days } from './yahoo.js'; // 🔥 NEW IMPORT
 
 dotenv.config();
 
@@ -29,7 +30,9 @@ function cleanJSON(text) {
   return text.replace(/```json|```/g, '').trim();
 }
 
-// 🧠 Predict today's price
+// ========================= GEMINI-BASED APIs =========================
+
+// 🧠 Predict today's price using Gemini
 app.post('/predict', async (req, res) => {
   try {
     const { companyName } = req.body;
@@ -45,7 +48,7 @@ app.post('/predict', async (req, res) => {
   }
 });
 
-// 📈 Predict last 10 days' prices
+// 📈 Predict last 10 days' prices using Gemini
 app.post('/predictRange', async (req, res) => {
   try {
     const { companyName } = req.body;
@@ -61,6 +64,39 @@ app.post('/predictRange', async (req, res) => {
   }
 });
 
+// ========================= YAHOO-BASED APIs (REAL DATA) =========================
+
+// 🔥 Predict today's real stock price using Yahoo Finance
+app.post('/predict/yahoo', async (req, res) => {
+  try {
+    const { companyName } = req.body;
+    if (!companyName) {
+      return res.status(400).json({ error: 'companyName is required' });
+    }
+    const result = await getTodayPrice(companyName);
+    res.json({ company: companyName, todayYahooPrediction: result });
+  } catch (err) {
+    console.error('Yahoo Today Price Error:', err.message);
+    res.status(500).json({ error: 'Failed to fetch today price from Yahoo.' });
+  }
+});
+
+// 🔥 Predict last 10 days real stock prices using Yahoo Finance
+app.post('/predictRange/yahoo', async (req, res) => {
+  try {
+    const { companyName } = req.body;
+    if (!companyName) {
+      return res.status(400).json({ error: 'companyName is required' });
+    }
+    const result = await getLast10Days(companyName);
+    res.json({ company: companyName, last10DaysYahooPrediction: result });
+  } catch (err) {
+    console.error('Yahoo Last 10 Days Error:', err.message);
+    res.status(500).json({ error: 'Failed to fetch last 10 days from Yahoo.' });
+  }
+});
+
+// ========================= Server Listen =========================
 app.listen(port, () => {
   console.log(`🚀 Server running at http://localhost:${port}`);
 });
