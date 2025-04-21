@@ -27,12 +27,15 @@ export async function getTodayPrice(companyName) {
 
     const quote = await yahooFinance.quote(symbol);
 
+    console.log(quote.regularMarketTime)
+
+
     return {
       companyName: quote.shortName || symbol,
       symbol: quote.symbol,
       marketPrice: quote.regularMarketPrice,
       currency: quote.currency,
-      timestamp: new Date(quote.regularMarketTime * 1000).toISOString(),
+      timestamp: new Date(quote.regularMarketTime).toISOString(),
     };
   } catch (error) {
     console.error('Yahoo Finance Error (Today Price):', error.message);
@@ -46,7 +49,7 @@ export async function getLast10Days(companyName) {
   try {
     const today = new Date();
     const past = new Date();
-    past.setDate(today.getDate() - 10);
+    past.setDate(today.getDate() - 20);
 
     const queryOptions = { period1: past, period2: today, interval: '1d' };
 
@@ -56,6 +59,8 @@ export async function getLast10Days(companyName) {
       date: day.date.toISOString().split('T')[0],
       close: day.close,
     }));
+
+    console.log("\n\n10 days\n\n",last10Days)
 
     return { last10Days };
   } catch (error) {

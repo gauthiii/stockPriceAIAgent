@@ -58,6 +58,7 @@ async function predictToday() {
 
 
   // 🔥 Yahoo - Today's Real Price
+// 🔥 Yahoo - Today's Real Price (Beautified)
 async function predictTodayYahoo() {
     const companyName = document.getElementById('companyName').value.trim();
     if (!companyName) {
@@ -73,17 +74,29 @@ async function predictTodayYahoo() {
       });
       const data = await res.json();
   
+      const { todayYahooPrediction } = data;
+  
+      // Format the timestamp nicely
+      const formattedDate = new Date(todayYahooPrediction.timestamp).toLocaleString('en-US', {
+        dateStyle: 'medium',
+        timeStyle: 'short'
+      });
+  
+      // Nicely structured output
       document.getElementById('outputArea').innerHTML = `
-        <div class="bg-white/20 p-4 rounded-xl">
-          <h3 class="text-lg font-semibold mb-2">Yahoo: Today's Real Price for ${data.company}</h3>
-          <pre class="whitespace-pre-wrap">${JSON.stringify(data.todayYahooPrediction, null, 2)}</pre>
+        <div class="bg-white/20 p-6 rounded-2xl shadow-md space-y-4">
+          <h3 class="text-2xl font-bold">${todayYahooPrediction.companyName} (${todayYahooPrediction.symbol})</h3>
+          <p class="text-lg">📈 <strong>Current Price:</strong> $${todayYahooPrediction.marketPrice} ${todayYahooPrediction.currency}</p>
+          <p class="text-sm">🕒 <strong>Timestamp:</strong> ${formattedDate}</p>
         </div>
       `;
+  
     } catch (error) {
       console.error(error);
       alert('Failed to fetch Yahoo today price.');
     }
   }
+  
   
   // 🔥 Yahoo - Last 10 Days Real Prices
   async function predictLast10DaysYahoo() {
