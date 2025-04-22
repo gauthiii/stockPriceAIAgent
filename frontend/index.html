@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="script.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
   <title>Stock AI Agent</title>
   <style>
@@ -38,25 +39,25 @@
 
   <!-- Left Panel -->
   <div class="text-white max-w-lg fade-in-up fade-delay-1">
-    <h1 class="text-5xl font-extrabold mb-4">Stock Price Predictor 📈</h1>
-    <h2 class="text-2xl font-light mb-8">Powered by Gemini AI & Real API</h2>
+    <h1 class="text-4xl font-extrabold mb-4">Stock Price Predictor 📈</h1>
+    <h2 class="text-xl font-light mb-8">Powered by Gemini AI & Yahoo Finance API</h2>
 
     <div class="space-y-4">
       <input id="companyName" type="text" placeholder="Enter Company Name" class="w-full px-4 py-2 rounded-full bg-white/20 backdrop-blur-md text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-green-300 transition" />
       
       <button onclick="predictTodayYahoo()" class="w-full py-2 rounded-full bg-[#66BB6A] hover:bg-[#43A047] text-black font-bold transition">
-        Give Today's Price
+        Give Today's Price with Yahoo Finance API
       </button>
 
       <input id="companySymbol" type="text" placeholder="Enter Company Symbol (e.g., AAPL)" class="w-full px-4 py-2 rounded-full bg-white/20 backdrop-blur-md text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-green-300 transition mt-8" />
       
       <button onclick="predictLast10DaysYahoo()" class="w-full py-2 rounded-full bg-[#66BB6A] hover:bg-[#43A047] text-black font-bold transition">
-        Get Last 10 Days Prices
+        Get Entire Prices with Yahoo Finance API
       </button>
 
 
       <!-- <div style="height: 10px;"></div> -->
-      <h2 class="text-2xl font-light mb-8">This one's by Gemini so we know it's full of shit</h2>
+      <h2 class="text-xl font-light mb-8">This one's by Gemini so we know it's full of shit</h2>
       <!-- <div style="height: 10px;"></div> -->
 
 
@@ -67,9 +68,9 @@
         Give Today's Price with Gemini AI Agent
       </button>
 
-      <input id="companySymbol" type="text" placeholder="Enter Company Symbol (e.g., AAPL)" class="w-full px-4 py-2 rounded-full bg-white/20 backdrop-blur-md text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-green-300 transition mt-8" />
+      <input id="companySymbol1" type="text" placeholder="Enter Company Symbol (e.g., AAPL)" class="w-full px-4 py-2 rounded-full bg-white/20 backdrop-blur-md text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-green-300 transition mt-8" />
       
-      <button onclick="predictLast10DaysYahoo()" class="w-full py-2 rounded-full bg-[#66BB6A] hover:bg-[#43A047] text-black font-bold transition">
+      <button onclick="predictLast10Days()" class="w-full py-2 rounded-full bg-[#66BB6A] hover:bg-[#43A047] text-black font-bold transition">
         Get Last 10 Days Prices with Gemini AI Agent
       </button>
 
@@ -81,10 +82,12 @@
   </div>
 
   <!-- Right Panel -->
-  <div class="bg-white/10 backdrop-blur-lg p-8 rounded-3xl shadow-2xl max-w-lg w-full fade-in-up fade-delay-2">
-    <h2 class="text-2xl text-center font-bold text-white mb-6">📊 Results</h2>
-    <div id="outputArea" class="text-white text-sm space-y-4 overflow-y-auto max-h-96"></div>
+  <div class="bg-white/10 backdrop-blur-lg p-12 rounded-3xl shadow-2xl max-w-5xl w-full fade-in-up fade-delay-2">
+    <h2 class="text-4xl text-center font-bold text-white mb-8">📊 Results</h2>
+    <div id="outputArea" class="text-white text-base space-y-6 overflow-y-auto max-h-[600px]"></div>
   </div>
+  
+  
 
 </div>
 
