@@ -22,4 +22,12 @@ A powerful hybrid project that predicts stock prices using **Gemini AI** (for cr
   Built with **Tailwind CSS** and **vanilla JavaScript**, delivering a modern and clean UI.
 
 
+<img width="800" alt="Screenshot 2025-04-22 at 4 09 20 AM" src="https://github.com/user-attachments/assets/9ee420f8-fc86-41b6-b5f3-82a7032e0c77" /> <br>
+<img width="800" alt="Screenshot 2025-04-22 at 4 11 57 AM" src="https://github.com/user-attachments/assets/3e9a967f-bf97-481e-a798-ee67c60c9577" /> <br>
+<img width="800" alt="Screenshot 2025-04-22 at 4 09 46 AM" src="https://github.com/user-attachments/assets/dbfe77ed-de27-4b5c-b6ae-329f7c77846f" /> <br>
+
+
+
+
+
 
